@@ -1,0 +1,176 @@
+---
+title: "Report"
+author: "Mark Hagemann"
+date: "February 8, 2016"
+output: html_document
+---
+
+```{r, echo = FALSE, message = FALSE}
+library(knitr)
+library(leaflet)
+library(lubridate)
+library(dplyr)
+library(mgcv)
+```
+
+## What I wanted to do
+
+Since I knew I would be pretty busy with running the hackathon this past weekend, I didn't want to take on anything too ambitious for my own project. So I figured a simple (and topical) thing to do would be to look at last year's Super Bowl Sunday and see how bus traffic differed from the typical Sunday. After all, the Patriots were playing (and ended up winning), so it stands to reason that a large chunk of the UMass PVTA ridership wouldn't be holding to their Sunday routine. Maybe they were going to the grocery store more, maybe they were going to the bars or to friends' places. Anyway, I thought this would be a simple question to look at. 
+
+But then I started thinking about how someone might generalize this question. Would it be possible to detect large deviations from typical patterns of bus use? This would require a spatially and temporally dependent probability distribution of ridership. From there I could move on to cluster detection, something I knew people did but that I had no experience with myself. 
+
+This led me to do a quick literature review, finding topics like "geographically weighted posson regression", and "spatiotemporal scan statistics". But by the time I'd waded very far into those time was already running short and I had more errands to run. 
+
+## What I did
+
+I still wanted to go the probabilistic route, so I decided a nice easy compromise would be to create a set of poisson models for the number of boards (people getting on) and alights (people getting off) in different places at different times. 
+
+A poisson model is natural for count data like this, and temporal differences in ridership can be easily accounted for using different model covariates. A larger question I had was how to incorporate the spatial dimension of ridership variability. I could calibrate a different model for every stop, but this seemed like too many models, and a level of detail I didn't need. Instead, I used a k-means clustering of board and alight events, and aggregated these to hourly bins. 
+
+Although this method could be applied to the entire dataset, I made it easier for my chromebook's processor and took a random sample of size 100000. 
+
+I did some minimal model piloting, settling (for now) on a generalized additive model with the following form: 
+
+```{r, eval = FALSE}
+boardfmla = Boards ~ s(hourOfDay, bs = "cc") + as.factor(inSession)
+alightfmla = Alights ~ s(hourOfDay, bs = "cc") + as.factor(inSession)
+```
+
+where `hourOfDay` is a numeric variable on $\{1, 2, ... 24\}$ and `inSession` is a binary indicator variable for UMass being in (Spring or Fall) session. For this analysis I excluded weekends, figuring that they would have markedly different ridership patterns. 
+
+Note that this model formula could and should be expanded and experimented upon, but that was simply beyond what I could do in the time I had.
+
+```{r, eval = FALSE}
+load("data_noautoload/AllBusData.RData")
+
+set.seed(15)
+moredata <- compfile %>% # compfile is the full dataset (~4.8M rows)
+  filter(Stop_Id > 0, # Restrict to times when bus was at a stop
+         abs(difftime(Server_Time, Time, units = "sec")) < 1000) %>% # These data were suspicious.
+  sample_n(size = 100000)
+rm(compfile); gc()
+```
+
+Then I made a k-means spatial clustering of the data using k = 50.
+
+```{r, eval = FALSE}
+set.seed(15)
+moremeans <- kmeans(moredata[c("Latitude", "Longitude")], 
+                    centers = 50,
+                    nstart = 10)
+kmCtrs <- as.data.frame(moremeans$centers) %>% 
+  mutate(cluster_no = 1:50)
+
+leaflet(kmCtrs) %>% 
+  addTiles() %>% 
+  addCircleMarkers(lng = ~Longitude, lat = ~Latitude, 
+                   popup = ~paste(cluster_no))
+```
+
+```{r, echo = FALSE}
+load("data/kmCtrs.RData")
+leaflet(kmCtrs) %>% 
+  addTiles() %>% 
+  addCircleMarkers(lng = ~Longitude, lat = ~Latitude, 
+                   popup = ~paste(cluster_no))
+```
+
+
+I then summarized the data to boards and alights per cluster per hour.
+
+```{r, eval = FALSE}
+summore <- moredata %>% 
+  mutate(cluster = moremeans$cluster, 
+         hour = hour(Time) + yday(Time) *24) %>% 
+  group_by(hour, cluster) %>% 
+  summarize(Boards = sum(Boards), Alights = sum(Alights)) %>% 
+  mutate(Time = as.POSIXct("2015-01-01 00:00") + hour * 3600,
+         isFallTerm = (Time > "2015-09-08 00:00" & 
+                         Time < "2015-12-19 00:00"),
+         isSpringTerm = (Time > "2015-01-20 00:00" & 
+                           Time < "2015-05-07 00:00"),
+         inSession = isFallTerm | isSpringTerm,
+         hourOfDay = hour %% 24)
+```
+
+Then, using `mgcv::gam()` I calibrated a separate poisson model for each cluster. 
+
+```{r, eval = FALSE}
+makemodel <- function(data) 
+  gam(formula = boardfmla, family = "poisson", data = data)
+
+gamlist_board <- summore %>% 
+  split(f = as.factor(.$cluster)) %>% 
+  lapply(makemodel)
+```
+
+Let's look at a couple of these models. Here's cluster 24, which is on campus near the Integrated Science Building.
+
+```{r, eval = FALSE}
+plot(gamlist_board[[24]], all.terms = TRUE, pages = 1, residuals = TRUE)
+```
+
+```{r, echo = FALSE}
+load("data/campusModel.RData")
+plot(campusModel, all.terms = TRUE, pages = 1, residuals = TRUE)
+```
+
+Here's cluster 35, which is right smack downtown.
+
+```{r, eval = FALSE}
+plot(gamlist_board[[35]], all.terms = TRUE, pages = 1, residuals = TRUE)
+```
+
+```{r, echo = FALSE}
+load("data/townModel.RData")
+plot(townModel, all.terms = TRUE, pages = 1, residuals = TRUE)
+```
+
+Here are some model predictions plotted on a leaflet map:
+
+```{r, echo = FALSE}
+# predictAllClusters <- function(hourofday, inSession) {
+#     newdata = data.frame(hourOfDay = hourofday, inSession = inSession)
+#   predictions = vapply(gamlist_board, FUN = predict, numeric(1), newdata = newdata, 
+#                        type = "response")
+# 
+#   # join to centers data frame
+#   centspreds = kmCtrs %>% 
+#     as.data.frame() %>% 
+#     mutate(preds12 = unname(predictions))
+#   centspreds
+# }
+
+load("data/preds1.RData")
+load("data/preds2.RData")
+
+makePredLeaflet <- function(centspreds) {
+  pal1 <- colorNumeric(palette = "YlOrRd", 
+                       domain = centspreds$preds12)
+  
+  centspreds %>% 
+    leaflet() %>% 
+    addTiles() %>% 
+    addCircleMarkers(lng = ~Longitude, lat = ~Latitude, 
+                     radius = ~log(preds12 + 1),
+                     popup = ~paste(round(preds12, digits = 2)))
+}
+
+makePredLeaflet(preds1)
+cat("\n\n")
+makePredLeaflet(preds2)
+```
+
+
+The first map is for the 6:00 pm hour when school is in session; the second is for the 8:00 am hour when school is not in session. The numbers that come up when you click the circles are the estimated mean number of boards for that hour. 
+
+And that's as far as I got!
+
+## Future work:
+
+- Near-term:
+    - Add models for alights
+    - Improve map aesthetics
+    - Make into a shiny app
+- Far-term:
+    - Develop a spatiotemporal scan-statistic model for detecting anomalous behavior.

@@ -1,0 +1,360 @@
+#Read in the data
+jan15 <- read.csv("~/Dropbox/UMass Hackathon/January2015.csv", header=FALSE)
+feb15 <- read.csv("~/Dropbox/UMass Hackathon/February2015.csv", header=FALSE)
+mar15 <- read.csv("~/Dropbox/UMass Hackathon/March2015.csv", header=FALSE)
+apr15 <- read.csv("~/Dropbox/UMass Hackathon/April2015.csv", header=FALSE)
+may15 <- read.csv("~/Dropbox/UMass Hackathon/May2015.csv", header=FALSE)
+jun15 <- read.csv("~/Dropbox/UMass Hackathon/June2015.csv", header=FALSE)
+jul15 <- read.csv("~/Dropbox/UMass Hackathon/July2015.csv", header=FALSE)
+aug15 <- read.csv("~/Dropbox/UMass Hackathon/August2015.csv", header=FALSE)
+sept15 <- read.csv("~/Dropbox/UMass Hackathon/September2015.csv", header=FALSE)
+oct15 <- read.csv("~/Dropbox/UMass Hackathon/October2015.csv", header=FALSE)
+nov15 <- read.csv("~/Dropbox/UMass Hackathon/November2015.csv", header=FALSE)
+dec15 <- read.csv("~/Dropbox/UMass Hackathon/December2015.csv", header=FALSE)
+### Understanding the syntax ###
+
+# "jan15": this can be any name you would like; it is what you are calling the dataset. Remember that R is case-sensitive!
+# "<-": This tells R that you are "assigning" whatever comes after this symbol to the object you specified before the symbol 
+## In our case, we are assigning the "January2015.csv" file to the object "jan15"
+
+# read.csv(): this is the function you must use to read in a .csv file. There are different functions for reading in different file types (i.e. .xlsx, .txt, .dat) 
+## NOTE: You can also read in SAS and STATA data if you download proper packages. Google to find out more.
+
+# In quotation marks within the read.csv() function, you specify the exact location for R to find the file you want to read in. This takes a little practice.
+## One way to do this is to find the file and click "Get Info" (for Mac) or "Properties" (for PC); the path to the file will usually be specified there. Copy and paste and you should be set!
+
+# "header=FALSE": This is telling R that the 1st row of our dataset DOES NOT contain the names of our variables. As you will see below, we must hand-name our variables.
+
+
+
+#Label Variables
+colnames(jan15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(feb15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(mar15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(apr15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(may15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(jun15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(jul15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(aug15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(sept15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(oct15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(nov15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+colnames(dec15)<-c("vehicle_id","time","latitude","longitude","speed","direction","OffRouteStatus","CommStatus","operational_status","server_time","route","trip","inbound_outbound","deviation","onboard","vehicle_name","run_id","run_name","stop_name","operator_record_id","route_name","stop_report","scheduled_headway","target_headway","alarm_state","GPSStatus","alights","boards","confidence_level","message_type_id","stop_dwell_time","PTV_health_alert","stop_id","stationary_status","OutOfOrderMessageType","stationary_duration","odometer_value","MDTFlags","v39","v40")
+### Understanding the syntax ###
+
+# "colnames(jan15)": This is telling R that we would like to assign column names to the columns in the 'jan15' dataset
+## NOTE: You must know the number of columns in your dataset or you will receive an error! An easy way to do this is by using the dim() function
+### The dim() function will tell you the number of rows and columns (in that order) in your dataset
+
+# "c()": c() stands for 'concatenate', which is an unnecessarily fancy word for a list of items. We use this function when we are specifying multiple things at once.
+## Example: 10numbers <- c(1,2,3,4,5,6,7,8,9,10) OR 3words <- c("One", "Two", "Three")
+### When dealing with numbers, DO NOT USE QUOTATION MARKS. Quotation marks indicate that you are specifying a factor (i.e. categorical) variable or a text name
+
+# "vehicle_id", "time", ....: These are our column names. Each one is specified by quotation marks and separated by commas
+
+
+
+#Obtain days of the week from time/date variables
+library(lubridate) #Package for abstracting date/time from time data; very much like how SAS manipulates time data
+jan15<-mutate(jan15,day=wday(time))
+feb15<-mutate(feb15,day=wday(time))
+mar15<-mutate(mar15,day=wday(time))
+apr15<-mutate(apr15,day=wday(time))
+may15<-mutate(may15,day=wday(time))
+jun15<-mutate(jun15,day=wday(time))
+jul15<-mutate(jul15,day=wday(time))
+aug15<-mutate(aug15,day=wday(time))
+sept15<-mutate(sept15,day=wday(time))
+oct15<-mutate(oct15,day=wday(time))
+nov15<-mutate(nov15,day=wday(time))
+dec15<-mutate(dec15,day=wday(time))
+### Understanding the syntax ###
+
+# "library(lubridate)": We are telling R to load this package and all of the functions it contains. This is important because the wday() function is part of this package.
+## Once loaded, you do not need to reload the package. It will remain active until you shut down RStudio.
+
+# "mutate(jan15,day=wday(time))": The mutate() function is in the "dplyr" package (great for data management) and is used to create new variables based on existing variables in our dataset.
+## This code is saying the following: "Within the 'jan15' dataset, I want to create a new variable called 'day' that has a value containing the weekday in each observation of the 'time' variable
+
+# "wday(time)": This is reading the data in the 'time' variable (which looks like this: 2015-11-01 [this would be Nov. 15th, 2015]), identifying the day of the year, 
+# figuring out what weekday this corresponds to, and putting the name of that weekday in the new variable we have created called 'day'
+
+
+
+# Combine all months into a single object "all.months"
+all.months <- tbl_df(rbind(jan15, feb15, mar15, apr15, may15, jun15, jul15, aug15, sept15, oct15, 
+                           nov15, dec15))
+### Understanding the syntax ###
+
+# "tbl_df()": This function makes the resulting object (all.months) be a "tbl" class object. This is a special type of object that makes looking at data a bit easier.
+## To learn more about this function, use the following link: https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+# "rbind()": This function tells R to combine all of the objects specified based on their rows. I know that didn't make must sense, so think of it this way:
+## Imagine that you are taking the data from each dataset and stacking it on top of one another. All of the columns are the same, but you get more and more rows as you stack more datasets on top of one another.
+
+
+
+# Update by months
+all.months1 <- mutate(all.months, month = month(time))
+### Understanding the syntax ###
+
+# Just like before, we are using the mutate() function to make a new variable based on one of the existing variables in the "all.months" dataset
+## We use the month() function to obtain the specific month from each observation in the 'time' variable
+
+
+
+# Isolate just the 30, 31, 34, 35
+am.30to35 <- filter(all.months1, route_name == "30" | route_name == "31" | route_name == "34" | route_name == "35")
+### Understanding the syntax ###
+
+# "filter()": This function is in the dplry package and is used to extract rows from a dataset that meet specific logical criteria
+## We are asking R to take only the rows where the "route_name" variable is either 30, 31, 34, or 35
+### The "==" means "equal to" and the "|" essentially means "or"
+
+
+
+# Recode off route status as factor variable
+am.30to35$OffRouteStatus <- as.factor(am.30to35$OffRouteStatus)
+### Understanding the syntax ###
+
+# "as.factor()": This function takes the object specified and converts it to the 'factor' class. Think of this like turning a numerical variable into a categorical variable.
+
+
+
+# Create proportions of disabled vehicles by route
+am.dis.prop <- aggregate(am.30to35$OffRouteStatus,list(am.30to35$route_name),tabulate)
+am.dis.prop$prop <- am.dis.prop$x[,2]/(am.dis.prop$x[,1]+am.dis.prop$x[,2])
+colnames(am.dis.prop) <- c("Route","Status","Proportion")
+### Understanding the syntax ###
+
+# "aggregate()": This function takes a dataset, subsets it into smaller samples based on some criteria, and computes summary statistics for each subset
+## We are asking R to take the 'OffRouteStatus' variable in the 'am.30to35' dataset and subset it by each level of the variable 'route_name', and then apply the tabulate() function to each subset
+### The object 'am.dis.prop' will now contain the results from the tabulate() function for each subset of the 'OffRouteStatus' variable that were created
+
+# "am.dis.prop$prop": When we create this object, we are asking R to take values from the 2nd column in the variable 'x' and divide them by the sum of the values in the 1st and 2nd columns of the variable 'x'
+## am.dis.prop$x[,2] specifies the 2nd column in the variable 'x'. This notation can be a little tricky, but works like this: [row,column]
+### Examples: data$x[2] indicates 2nd row in x; data$x[,3] indicates 3rd column in x; data$x[2,3] indicates 2nd row, 3rd column in x; data$x[1:3] indicates the 1st through 3rd rows in x
+
+# "colnames()": Applies the specified column names to each of the columns in the 'am.dis.prop' dataset
+
+
+
+# Subset of only disabled buses
+am.dis <- filter(am.30to35, OffRouteStatus == 3)
+### Understanding the syntax ###
+
+# This creates a subset of only observations with 'OffRouteStatus' = 3 in the 'am.30to35' dataset and stores it in the 'am.dis' object
+
+
+
+# Arrange data by vehicle id and time so that disabled time can be collapsed
+am.time <- am.dis %>%
+  arrange(vehicle_id,time) %>%
+  filter(speed == 0, stop_dwell_time == 0) %>% #Added stop_dwell_time exclusion, 17:16 2/6/16
+  mutate(time2=ymd_hms(time)) %>% 
+  mutate(lat.diff= c(0,diff(latitude)), long.diff=c(0,diff(longitude))) %>% 
+  mutate(is.moving=abs(lat.diff)>0.00001&abs(long.diff)>0.00001) %>% 
+  mutate(cum.sum=cumsum(is.moving)) %>% 
+  group_by(vehicle_id,cum.sum) %>% 
+  summarise(time.diff=max(time2)-min(time2),lat=mean(latitude),long=mean(longitude))
+### Understanding the syntax ###
+
+# "%>%": This is called a 'pipe'. We use this to string together a number of functions in a single command.
+## You can think of this symbol as saying "and then"
+### Example: data2 <- data1 %>% arrange(x,y) %>% filter(x != 5, y >= 2) [NOTE: You go not have to start on a new line everything you use "%>%"; I do this because I find it easier to read]
+#### This example is saying I want R to take the 'data1' dataset AND THEN arrange it by x and y AND THEN make a subset containing only observations where x is not equal to 5 
+#### and y is greater than or equal to 2, and I want this final product to be contained in the object 'data2'
+##### Pipes can be really helpful, but they take a little practice to get used to
+
+# "arrange()": We are asking R to order the data by 'vehicle_id' and then by 'time'
+## NOTE: In these data, a 'vehicle_id' appears MANY times, and so you can think of this as having all observations with the vehicle id #1 come first, 
+## and then among those observations where vehicle id = #1, we order them further by the 'time' variable
+
+# "group_by()": We are asking R to create groups of the 'vehicle_id' variable by level of the 'cum.sum' variable
+## This is similar to the 'arrange()' function, however here there is no specific ordering (i.e. ascending/descending values), just grouping
+
+# "summarise()": We are asking R to obtain the values we have specified in the function and display them in a single row
+
+
+
+#Obtain Longitude/Latitude cooridinates for all bus stops on the 30, 31, 34, & 35 bus routes
+bus.stops<-rbind(geocode("Colonial Village (Out) (119), Amherst, MA 01002"), 
+                 geocode("Colonial Village / S East Street (Out) (121)"),
+                 geocode("Amherst Glass (Out) (102)"),
+                 geocode("Amherst Crossing (In) (108), Amherst, MA 01002"),
+                 geocode("Gray Street (Out) (106)"),
+                 geocode("Churchill Street (105), Amherst, MA 01002"),
+                 geocode("Amherst Town Hall (110)"),
+                 geocode("Amherst Post Office (96), Amherst, MA 01002"),
+                 geocode("Pray Street (Out) (93)"),
+                 geocode("Triangle Street (N) (85)"),
+                 geocode("Fearing Street (Out) (82)"),
+                 geocode("Studio Arts Building (72), Amherst, MA 01002"),
+                 geocode("Integrative Learning Center (64), Amherst, MA 01002"),
+                 geocode("GRC (58)"),
+                 geocode("School of Education (43), Amherst, MA 01002"),
+                 geocode("Fairfield Street (42), Amherst, MA 01002"),
+                 geocode("North Village (38), Amherst, MA 01002"),
+                 geocode("Crestview (37)"),
+                 geocode("Puffton Village 2 (35)"),
+                 geocode("Puffton Village 1 (34)"),
+                 geocode("North Amherst (Out) (31)"),
+                 geocode("Townhouse (Out) (29), Amherst, MA 01002"),
+                 geocode("Bioshelter (Out) (19)"),
+                 geocode("Plumtree Road (Out) (18)"),
+                 geocode("Plumtree Road (In) (17), Amherst, MA 01002"),
+                 geocode("Laurenitis Farm Stand (In) (15)"),
+                 geocode("Bagdon Farm (13)"),
+                 geocode("Cliffside (11), Amherst, MA 01002"),
+                 geocode("Silver Lane (10), Amherst, MA 01002"),
+                 geocode("Goten Restaurant (8)"),
+                 geocode("Pioneer Vally Apts. (7)"),
+                 geocode("Garage Road (In) (8005), Amherst, MA 01002"),
+                 geocode("Sunderland Center (S. Deerfield bound) (8009)"),
+                 geocode("Sugarloaf Estates (9)"),
+                 geocode("140 Governors Dr, Amherst, MA 01002"),
+                 geocode("Southwest/University Drive (N) (87), Amherst, MA 01002"),
+                 geocode("Southwest Shelter (78)"),
+                 geocode("WFCR (77)"),
+                 geocode("Visitors Center (75), Amherst, MA 01002"),
+                 geocode("Village Park (S) (53), Amherst, MA 01002"),
+                 geocode("Lot 13 (51), Amherst Ma 01002"),
+                 geocode("Frat/Sort Park (48)"),
+                 geocode("Tilson Farm (Out) (40)"),
+                 geocode("Totman Gym (Out) (47)"),
+                 geocode("Amherst Common (N) (112), Amherst, MA 01002"),
+                 geocode("Memorial Drive (In) (133), Amherst, MA 01002"),
+                 geocode("Columbia Drive (Out) (8011), Amherst, MA 01002"),
+                 geocode("The Brook (Out) (151), Amherst, MA 01002"),
+                 geocode("The Brook (In) (152), Amherst, MA 01002"),
+                 geocode("The Boulders (157)"),
+                 geocode("Southpoint (153)"))
+bus.stops<-rbind(bus.stops,c(-72.537316,42.392400)) #lot12.stop
+bus.stops<-rbind(bus.stops,c(-72.534430,42.392487)) #lot25.stop
+bus.stops<-rbind(bus.stops,c(-72.532613,42.389558)) #mullins.stop
+bus.stops<-rbind(bus.stops,c(-72.532353,42.389158)) #rec.stop
+bus.stops<-rbind(bus.stops,c(-72.531086,42.385981)) #boyden.stop
+bus.stops<-rbind(bus.stops,c(-72.532721,42.377542)) #dallas.stop
+bus.stops<-rbind(bus.stops,c(-72.534051,42.379626)) #lot11.stop
+bus.stops<-rbind(bus.stops,c(-72.532180,42.382283)) #lot21.stop
+bus.stops<-rbind(bus.stops,c(-72.518944,42.383004)) #eastpleasant.stop
+bus.stops<-rbind(bus.stops,c(-72.517658,42.388862)) #butterfield.stop
+bus.stops<-rbind(bus.stops,c(-72.518834,42.389219)) #chadbourne.stop
+bus.stops<-rbind(bus.stops,c(-72.520084,42.391688)) #ohill.stop
+bus.stops<-rbind(bus.stops,c(-72.519225,42.392597)) #ohill2.stop
+bus.stops<-rbind(bus.stops,c(-72.511185,42.394846)) #admissions.stop
+bus.stops<-rbind(bus.stops,c(-72.521729,42.397137)) #sylvan.stop
+### Understanding the syntax ###
+
+# "geocode()": This is a function in the 'ggmap' package. This package is the bomb.com, however may be a tad difficult to use for newer R users
+## This function takes a location that we specify in the paraetheses and outputs the longitude and latitude coordinates of that location. AMAZING, RIGHT?!
+### For locations that geocode() could not find, I manually used Google Maps to find the coordinates
+#### All of these coordinates are contained in the "bus.stops" object, one column for longitude and one column for latitude
+
+
+
+##############  Interactive OffRouteStatus Map using Leaflet Package  ################
+#---Source code courtesy of Mark Hagemann---#
+#library(leaflet)  <--- This package allows you to create interactive HTML-based maps
+
+# Subset the overall dataset to make a more managable sample
+# NOTE: The only reason I am doing this step is because the complete dataset contains ~6 million observations. 
+# To save my computer from inexplicably combusting while still seeing if my code will work, I take a sample from the overall dataset. 
+sub.time<-sample(am.time,25000)
+sub.time<-filter(am.time,time.diff>0) %>%
+#sub.time<-mutate(sub.time,time.diff2=time.diff/60) %>%
+filter(time.diff2 < 1)
+### Understanding the syntax ###
+
+# "sample()": This function takes a random sample of 25,000 observations from the 'am.time. dataset and stores them in the 'sub.time' dataset
+
+
+
+# Add a color palette
+palBin <- colorNumeric(palette = "YlOrRd", domain=as.numeric(sub.time$time.diff))
+### Understanding the syntax ###
+
+# "colorNumeric()": We are asking R to create a Yellow/Orange/Red color palatte for us that varies based on the numerical value of observations in the 'time.diff' variable of the 'sub.time' dataset
+
+
+
+# Make the basemap
+disp.map<-sub.time %>% 
+  leaflet() %>% 
+  addTiles()
+### Understanding the syntax ###
+
+# "leaflet()": This function is telling R that we would like to create an interactive HMTL-based map. The preceding %>% tells R that we want this map to be based on the 'sub.time' dataset
+# "addTiles()": This function adds 'tiles' to the map. Basically, this function makes the map visible; otherwise we wouldn't see anything when we run the map.
+
+
+
+# Create the interactive map with disabled bus data (as circles), bus stops (as markers), and a legend (explaining the colors)
+disp.map %>% 
+  addCircleMarkers(lng = ~long, lat = ~lat, radius = 10, 
+                   stroke = FALSE, color = "gray20", weight = 1,
+                   fillColor = ~palBin(as.numeric(time.diff)), fillOpacity = 0.6) %>% 
+  addMarkers(lng = ~lon, lat = ~lat, data = bus.stops, options=(opacity=0.5)) %>%
+  addLegend(pal = palBin, values = ~as.numeric(time.diff), title = "Disabled?")
+### Understanding the syntax ###
+
+# "addCircleMarkers()": We are asking R to use the 'long' and 'lat' variables in the 'disp.map' object to create circles of radius 10 
+# using the color palatte that we made earlier, with a opacity of 0.6 (kind of transparent). I know this is a tad confusing; practice with ggplot2 before graduating to ggmap
+
+# "addMarkers()": We are asking R to use the 'long' and 'lat' variables from the 'bus.stops' object to add markers to our map
+
+# "addLegend()": We are asking R to use our color palatte and the numerical values in the variable 'time.diff' to create a legend with the title 'Disabled?'
+
+
+
+# Make graphs of early/late by route and day/month
+op.status <- am.30to35 %>% 
+  filter(OffRouteStatus == 1 & operational_status < 3 & operational_status > 0 )
+library(ggplot2)
+op.status$fop_status <- as.factor(op.status$operational_status)
+op.status$fop_status <- revalue(op.status$fop_status,c("1"="Late", "2"="Early"))
+### Understanding the syntax ###
+
+# "revalue()": We are asking R to replace values if '1' and '2' in the variable 'fop_status' with values of 'Late' and 'Early', respectively
+
+
+
+# Plot by day of the week
+ggplot(op.status) + geom_bar(aes(x=factor(fop_status),fill=fop_status)) + facet_grid(route ~ day)
+# Plot by month
+ggplot(op.status) + geom_bar(aes(x=factor(fop_status),fill=fop_status)) + facet_grid(route ~ month)
+### Understanding the syntax ###
+
+# "ggplot()": We are asking R to use the 'op.status' data to create a graphic [This by itself doesn't do anything, and so we specify additional options]
+# "geom_bar()": We are asking R to create a bar chart using the 'op.status' data we just specified with the ggplot() function
+## "aes()": We are telling R to create bars for each level of the 'fop_status' variable and to have those bars contain the 'fop_status' data
+### NOTE: The 'fill' option is important if we want to make a stacked bar chart. We could make the bars based on one variable (i.e. marital status) and contain data on another (i.e. gender)
+## "facet_grid()": We are telling R to create a row for each value in the 'route' variable and a column for each value in the 'day' variable
+### When combined with the geom_bar() function, we are telling R to make bar charts for each day of the week, for each of the specified bus routes (30, 31, 34, 35)
+
+
+
+## Weather data ## [Katie obtained weather data and looked to see if it was correlated with bus disability]
+weather <- read.csv("/Users/katie/Documents/UMass/HackPVTA/weatherdata.csv")
+weather$time2 <- as.Date(mdy_hm(weather$Period))
+weather$month.day <- paste(month(weather$time2),day(weather$time2),sep="-")
+
+am.time$month.day <- paste(am.time$month,am.time$day,sep="-")
+am.time.weather <- left_join(am.time,weather,by="month.day")
+### Understanding the syntax ###
+
+# "as.Date()": We are asking R to convert the specified object into the 'date' class
+# "mdy_hm()": We are asking R to obtain the month-day-year, hour-minute from the 'Period' variable in the 'weather' dataset
+# "paste()": We are asking R to concatenate (join) to two objects specified, where each individual value is separated by "-" in the variable
+# "left_join()": We are asking R to merge the rows from the two variables specified based on their values for the variable 'month.day'
+## Think of this as using PID in SAS to merge the observations of two datasets
+
+
+
+# Not super efficient code
+am.time.weather$Period <- NULL
+am.time.weather$time2 <- NULL
+am.time.weather$month.day <- NULL
+# Idk what's going on here tbh...
+
+####
